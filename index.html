@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
 <title>Uklon — Перевірка розрахунків</title>
 
-<!-- PWA manifest -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Uklon Калькулятор">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -13,19 +12,36 @@
 <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192.png">
 <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512.png">
 
-<!-- PWA manifest -->
 <link rel="manifest" href="manifest.json">
 
 <style>
+  /* --- СВЕТЛАЯ ТЕМА (Light Mode - По умолчанию) --- */
   :root{
+    /* Основные цвета */
     --bg:#f2f4f7;
     --card:#ffffff;
     --accent:#0066ff;
+    
+    /* Тексты */
+    --main-text:#000000;
+    --muted-text:#6b6b6b;
+    
+    /* Границы и разделители */
+    --border-color:#d8dce3;
+    --panel-border:#e7e9ee;
+    --line-divider:#eee;
+    
+    /* Цвета состояний */
     --green:#c8f5c2;
     --red:#ffd4d4;
     --good:#0c7a27;
     --bad:#a80000;
-    --muted:#6b6b6b;
+    
+    /* Элементы .zero */
+    --zero-bg:#f4f4f4;
+    --zero-border:#ccc;
+    --zero-text:#555;
+    --small-btn-bg:#eee;
   }
 
   body{
@@ -33,6 +49,7 @@
     background:var(--bg);
     margin:0;
     padding:0;
+    color: var(--main-text); /* Используем переменную */
   }
 
   .wrap{max-width:600px;margin:0 auto;padding:16px;}
@@ -46,16 +63,18 @@
     margin-bottom:16px;
   }
 
-  label{font-size:15px;color:var(--muted);margin-bottom:6px;display:block;}
+  label{font-size:15px;color:var(--muted-text);margin-bottom:6px;display:block;}
 
   input[type="number"]{
     width:100%;
     padding:14px 12px;
     font-size:18px;
     border-radius:12px;
-    border:1px solid #d8dce3;
+    border:1px solid var(--border-color); /* Используем переменную */
     margin-bottom:12px;
     box-sizing:border-box;
+    background: var(--card); /* Убедимся, что фон не прозрачный */
+    color: var(--main-text);
   }
 
   input[type="number"]:focus{
@@ -78,10 +97,10 @@
   .results{display:flex;flex-direction:column;gap:16px;}
 
   .panel{
-    background:#fff;
+    background:var(--card); /* Используем переменную */
     border-radius:16px;
     padding:16px;
-    border:1px solid #e7e9ee;
+    border:1px solid var(--panel-border); /* Используем переменную */
   }
 
   .panel h3{margin:0 0 10px;font-size:18px;}
@@ -91,7 +110,7 @@
     justify-content:space-between;
     padding:8px 0;
     font-size:16px;
-    border-top:1px solid #eee;
+    border-top:1px solid var(--line-divider); /* Используем переменную */
   }
   .line:first-of-type{border-top:0;padding-top:0;}
 
@@ -107,9 +126,9 @@
   }
 
   .zero{
-    background:#f4f4f4;
-    border:1px dashed #ccc;
-    color:#555;
+    background:var(--zero-bg);
+    border:1px dashed var(--zero-border);
+    color:var(--zero-text);
   }
 
   textarea{
@@ -119,15 +138,24 @@
     border-radius: 10px;
     padding: 10px;
     font-size: 14px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color); /* Используем переменную */
     box-sizing: border-box;
     display: block;
+    background: var(--card); /* Убедимся, что фон не прозрачный */
+    color: var(--main-text);
   }
 
   .row{display:flex;gap:10px;}
-  .small-btn{padding:8px 12px;border-radius:8px;border:0;background:#eee;cursor:pointer}
-
-  /* строка с переключателем */
+  .small-btn{
+    padding:8px 12px;
+    border-radius:8px;
+    border:0;
+    background:var(--small-btn-bg); /* Используем переменную */
+    color: var(--main-text); /* Используем переменную */
+    cursor:pointer;
+  }
+  
+  /* ... (остальные стили не изменены, так как они не затрагивают цвета) ... */
   .toggle-row {
     display: flex;
     justify-content: space-between;
@@ -136,7 +164,6 @@
     font-size: 16px;
   }
 
-  /* скрытый блок */
   #extraFields {
     overflow: hidden;
     max-height: 0;
@@ -144,13 +171,11 @@
     transition: max-height 0.35s ease, padding 0.25s ease;
   }
 
-  /* когда открыт */
   #extraFields.open {
     max-height: 300px;
     padding: 10px 0;
   }
 
-  /* стиль дополнительных полей */
   #extraFields label {
     display: block;
     margin: 8px 0 4px;
@@ -160,9 +185,53 @@
     width: 100%;
     padding: 12px;
     border-radius: 10px;
-    border: 1px solid #d8dce3;
+    border: 1px solid var(--border-color); /* Используем переменную */
     font-size: 16px;
     box-sizing: border-box;
+    background: var(--card); /* Убедимся, что фон не прозрачный */
+    color: var(--main-text);
+  }
+  
+  /* --- ТЕМНАЯ ТЕМА (Dark Mode - Активируется системными настройками) --- */
+  @media (prefers-color-scheme: dark) {
+    :root{
+      /* Фон и карточки */
+      --bg: #1c1c1e;        
+      --card: #2c2c2e;      
+      
+      /* Тексты */
+      --main-text:#ffffff;
+      --muted-text:#a3a3a8;
+      
+      /* Границы и разделители */
+      --border-color:#555;
+      --panel-border:#555;
+      --line-divider:#444;
+      
+      /* Цвета состояний */
+      --green: #2d4538;
+      --red: #4a2c2c;
+      --good: #57d657;
+      --bad: #ff6666;
+
+      /* Элементы .zero */
+      --zero-bg: #444;
+      --zero-border: #777;
+      --zero-text: #ccc;
+      --small-btn-bg: #444;
+    }
+    
+    .card{
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4); 
+    }
+
+    input[type="number"]:focus{
+      box-shadow:0 0 0 2px rgba(0,136,255,0.4);
+    }
+    
+    .small-btn{
+      color: #fff; /* Явно устанавливаем белый текст на кнопках */
+    }
   }
 
 </style>
@@ -228,6 +297,7 @@
 </div>
 
 <script>
+// JavaScript не требует изменений, так как он не работает с темами.
 const STD = {minKm:1.9, base:100, perKm:17.6, name:"Стандарт", extraMinute:3, extraPoint:10};
 const CFM = {minKm:2.1, base:115, perKm:19.8, name:"Комфорт", extraMinute:3, extraPoint:10};
 const BIZ = {minKm:1.6, base:140, perKm:23.5, name:"Бізнес", extraMinute:4, extraPoint:10};
@@ -268,7 +338,7 @@ function getGreeting() {
 
   if (h >= 5 && h < 12) return "Доброго ранку!🌤️";
   if (h >= 12 && h < 17) return "Доброго дня!🌤️";
-  if (h >= 17 && h < 23) return "Доброго вечора!🌙✨";
+  if (h >= 17 && h >= 17 && h < 23) return "Доброго вечора!🌙✨";
   return "Доброї ночі!✨🌙";
 }
 
