@@ -43,14 +43,53 @@
     --zero-text:#555;
     --small-btn-bg:#eee;
   }
+  
+  /* --- ТЕМНАЯ ТЕМА (Dark Mode - Активируется классом .dark-mode) --- */
+  body.dark-mode :root, body.dark-mode {
+    /* Фон и карточки */
+    --bg: #1c1c1e;        
+    --card: #2c2c2e;      
+    
+    /* Тексты */
+    --main-text:#ffffff;
+    --muted-text:#ffffff;
+    
+    /* Границы и разделители */
+    --border-color:#555;
+    --panel-border:#555;
+    --line-divider:#444;
+    
+    /* Цвета состояний */
+    --green: #2d4538;
+    --red: #4a2c2c;
+    --good: #57d657;
+    --bad: #ff6666;
 
+    /* Элементы .zero */
+    --zero-bg: #444;
+    --zero-border: #777;
+    --zero-text: #ccc;
+    --small-btn-bg: #444;
+    
+    /* Переопределение тени для карточек в темной теме */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4); 
+  }
+  
+  /* Общие стили для body и других элементов */
   body{
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial;
     background:var(--bg);
     margin:0;
     padding:0;
-    color: var(--main-text); /* Используем переменную */
+    color: var(--main-text);
+    transition: background-color 0.3s, color 0.3s; /* Добавим плавный переход */
   }
+
+  /*
+    ВАЖНО: удалена вся секция @media (prefers-color-scheme: dark),
+    теперь она заменена классом .dark-mode выше.
+    Стили ниже остаются прежними, так как они используют переменные.
+  */
 
   .wrap{max-width:600px;margin:0 auto;padding:16px;}
   h1{text-align:center;margin:0 0 16px;font-size:22px;font-weight:700;}
@@ -61,6 +100,7 @@
     padding:18px;
     box-shadow:0 6px 18px rgba(0,0,0,0.06);
     margin-bottom:16px;
+    transition: background-color 0.3s, box-shadow 0.3s; /* Плавный переход */
   }
 
   label{font-size:15px;color:var(--muted-text);margin-bottom:6px;display:block;}
@@ -70,11 +110,12 @@
     padding:14px 12px;
     font-size:18px;
     border-radius:12px;
-    border:1px solid var(--border-color); /* Используем переменную */
+    border:1px solid var(--border-color);
     margin-bottom:12px;
     box-sizing:border-box;
-    background: var(--card); /* Убедимся, что фон не прозрачный */
+    background: var(--card);
     color: var(--main-text);
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
   }
 
   input[type="number"]:focus{
@@ -97,10 +138,11 @@
   .results{display:flex;flex-direction:column;gap:16px;}
 
   .panel{
-    background:var(--card); /* Используем переменную */
+    background:var(--card);
     border-radius:16px;
     padding:16px;
-    border:1px solid var(--panel-border); /* Используем переменную */
+    border:1px solid var(--panel-border);
+    transition: background-color 0.3s, border-color 0.3s;
   }
 
   .panel h3{margin:0 0 10px;font-size:18px;}
@@ -110,7 +152,7 @@
     justify-content:space-between;
     padding:8px 0;
     font-size:16px;
-    border-top:1px solid var(--line-divider); /* Используем переменную */
+    border-top:1px solid var(--line-divider);
   }
   .line:first-of-type{border-top:0;padding-top:0;}
 
@@ -138,11 +180,12 @@
     border-radius: 10px;
     padding: 10px;
     font-size: 14px;
-    border: 1px solid var(--border-color); /* Используем переменную */
+    border: 1px solid var(--border-color);
     box-sizing: border-box;
     display: block;
-    background: var(--card); /* Убедимся, что фон не прозрачный */
+    background: var(--card);
     color: var(--main-text);
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
   }
 
   .row{display:flex;gap:10px;}
@@ -150,12 +193,12 @@
     padding:8px 12px;
     border-radius:8px;
     border:0;
-    background:var(--small-btn-bg); /* Используем переменную */
-    color: var(--main-text); /* Используем переменную */
+    background:var(--small-btn-bg);
+    color: var(--main-text);
     cursor:pointer;
+    transition: background-color 0.3s, color 0.3s;
   }
   
-  /* ... (остальные стили не изменены, так как они не затрагивают цвета) ... */
   .toggle-row {
     display: flex;
     justify-content: space-between;
@@ -185,55 +228,13 @@
     width: 100%;
     padding: 12px;
     border-radius: 10px;
-    border: 1px solid var(--border-color); /* Используем переменную */
+    border: 1px solid var(--border-color);
     font-size: 16px;
     box-sizing: border-box;
-    background: var(--card); /* Убедимся, что фон не прозрачный */
+    background: var(--card);
     color: var(--main-text);
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
   }
-  
-  /* --- ТЕМНАЯ ТЕМА (Dark Mode - Активируется системными настройками) --- */
-  @media (prefers-color-scheme: dark) {
-    :root{
-      /* Фон и карточки */
-      --bg: #1c1c1e;        
-      --card: #2c2c2e;      
-      
-      /* Тексты */
-      --main-text:#ffffff;
-      --muted-text:#ffffff;
-      
-      /* Границы и разделители */
-      --border-color:#555;
-      --panel-border:#555;
-      --line-divider:#444;
-      
-      /* Цвета состояний */
-      --green: #2d4538;
-      --red: #4a2c2c;
-      --good: #57d657;
-      --bad: #ff6666;
-
-      /* Элементы .zero */
-      --zero-bg: #444;
-      --zero-border: #777;
-      --zero-text: #ccc;
-      --small-btn-bg: #444;
-    }
-    
-    .card{
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4); 
-    }
-
-    input[type="number"]:focus{
-      box-shadow:0 0 0 2px rgba(0,136,255,0.4);
-    }
-    
-    .small-btn{
-      color: #fff; /* Явно устанавливаем белый текст на кнопках */
-    }
-  }
-
 </style>
 </head>
 
@@ -263,8 +264,17 @@
       <label>Кількість проміжних точок</label>
       <input id="midPoints" type="number" step="1" placeholder="необов’язково">
     </div>
+    
+    <label class="toggle-row">
+      <span>Тёмная тема</span>
+      <input type="checkbox" id="themeToggle">
+    </label>
+    
+    <div class="row" style="margin-top: 16px;">
+        <button class="small-btn" id="resetBtn" style="flex-grow: 1;">Очистити параметри</button>
+    </div>
 
-    <button class="btn" id="calcBtn">Розрахувати</button>
+    <button class="btn" id="calcBtn" style="margin-top: 12px;">Розрахувати</button>
   </div>
 
   <div class="results">
@@ -444,6 +454,69 @@ document.getElementById('extraToggle').addEventListener('change', function () {
     midInput.value = '';
   }
 });
+
+
+// --- НОВЫЙ КОД: Очистка и Переключение Темы ---
+
+// 1. Привязка очистки параметров
+document.getElementById("resetBtn").onclick = function() {
+  document.getElementById("actual").value = "";
+  document.getElementById("distance").value = "";
+  document.getElementById("coef").value = "";
+  document.getElementById("paidMinutes").value = "";
+  document.getElementById("midPoints").value = "";
+  
+  // Сброс переключателя доп. параметров
+  document.getElementById("extraToggle").checked = false;
+  document.getElementById("extraFields").classList.remove('open');
+  
+  // Очистка результатов
+  document.getElementById("stdCalc").textContent = "—";
+  document.getElementById("cfCalc").textContent = "—";
+  document.getElementById("bizCalc").textContent = "—";
+  colorize(document.getElementById("stdDiff"), NaN);
+  colorize(document.getElementById("cfDiff"), NaN);
+  colorize(document.getElementById("bizDiff"), NaN);
+  document.getElementById('stdMsg').value = '';
+  document.getElementById('cfMsg').value = '';
+  document.getElementById('bizMsg').value = '';
+};
+
+
+// 2. Логика переключения темы
+const themeToggle = document.getElementById('themeToggle');
+const body = document.body;
+
+function setTheme(isDark) {
+    if (isDark) {
+        body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+    }
+}
+
+// Проверка сохраненной темы при загрузке
+const savedTheme = localStorage.getItem('theme');
+
+if (savedTheme === 'dark') {
+    setTheme(true);
+    themeToggle.checked = true;
+} else if (savedTheme === 'light') {
+    setTheme(false);
+    themeToggle.checked = false;
+} else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    // Если нет сохраненной темы, но системная тема тёмная
+    themeToggle.checked = true;
+}
+
+
+themeToggle.addEventListener('change', function() {
+    setTheme(this.checked);
+});
+
+// --- КОНЕЦ НОВОГО КОДА ---
 
 // PWA Service Worker registration
 if ('serviceWorker' in navigator) {
