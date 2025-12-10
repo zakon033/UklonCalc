@@ -44,12 +44,49 @@
     --small-btn-bg:#eee;
   }
 
-  /* --- ПРИНУДИТЕЛЬНАЯ ТЕМНАЯ ТЕМА (html.dark-mode) --- */
-  html.dark-mode :root {
+  /* --- ТЕМНАЯ ТЕМА (1. Активируется системными настройками) --- */
+  @media (prefers-color-scheme: dark) {
+    :root{
+      --bg: #1c1c1e;        
+      --card: #2c2c2e;      
+      --main-text:#ffffff;
+      --muted-text:#ffffff; /* Белый для лейблов */
+      --border-color:#555;
+      --panel-border:#555;
+      --line-divider:#444;
+      --green: #2d4538;
+      --red: #4a2c2c;
+      --good: #57d657;
+      --bad: #ff6666;
+      --zero-bg: #444;
+      --zero-border: #777;
+      --zero-text: #ccc;
+      --small-btn-bg: #444;
+    }
+    
+    .card{
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4); 
+    }
+
+    input[type="number"]:focus{
+      box-shadow:0 0 0 2px rgba(0,136,255,0.4);
+    }
+    
+    .small-btn{
+      color: #fff; 
+    }
+
+    .slider:before {
+        background-color: #f2f2f7; 
+    }
+  }
+
+  /* --- ТЕМНАЯ ТЕМА (2. Принудительное ручное переключение) --- */
+  html[data-theme="dark"] :root {
     --bg: #1c1c1e;        
     --card: #2c2c2e;      
     --main-text:#ffffff;
-    --muted-text:#ffffff; /* Белый для лейблов */
+    --muted-text:#ffffff;
     --border-color:#555;
     --panel-border:#555;
     --line-divider:#444;
@@ -62,23 +99,20 @@
     --zero-text: #ccc;
     --small-btn-bg: #444;
   }
-  
-  html.dark-mode .card{
+
+  html[data-theme="dark"] .card{
     box-shadow: 0 4px 12px rgba(0,0,0,0.4); 
   }
-
-  html.dark-mode input[type="number"]:focus{
+  html[data-theme="dark"] input[type="number"]:focus{
     box-shadow:0 0 0 2px rgba(0,136,255,0.4);
   }
-  
-  html.dark-mode .small-btn{
-    color: #fff; 
+  html[data-theme="dark"] .small-btn{
+    color: #fff;
   }
-
-  html.dark-mode .slider:before {
+  html[data-theme="dark"] .slider:before {
       background-color: #f2f2f7; 
   }
-
+  
   /* --- БАЗОВЫЕ СТИЛИ (Одинаковые для обеих тем) --- */
   body{
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial;
@@ -97,7 +131,6 @@
     padding:18px;
     box-shadow:0 6px 18px rgba(0,0,0,0.06);
     margin-bottom:16px;
-    /* Тень в темной теме задана явно выше, чтобы переопределить эту */
   }
 
   label{font-size:15px;color:var(--muted-text);margin-bottom:6px;display:block;}
@@ -304,7 +337,7 @@
   }
   
   /* Переопределение цвета ползунка в ТЕМНОЙ теме */
-  html.dark-mode .slider:before {
+  html[data-theme="dark"] .slider:before {
       background-color: #f2f2f7; 
   }
 
@@ -413,7 +446,6 @@ function colorize(el, v){
 
   el.textContent = v.toFixed(2) + " ₴";
 
-  // Используем CSS переменные для фона и текста
   if(v > 0){
     el.style.background = "var(--green)";
     el.style.color = "var(--good)";
@@ -424,8 +456,8 @@ function colorize(el, v){
   }
   else {
     el.classList.add("zero");
-    el.style.background = ""; // Сброс фона, чтобы использовался CSS для .zero
-    el.style.color = ""; // Сброс цвета, чтобы использовался CSS для .zero
+    el.style.background = ""; 
+    el.style.color = ""; 
   }
 }
 
@@ -522,7 +554,6 @@ document.getElementById("calcBtn").onclick = function(){
   document.getElementById('bizMsg').value = genMsg(BIZ, km, coef, actual, paidMinutes, midPoints);
 };
 
-// --- ФУНКЦИОНАЛ КНОПКИ ОЧИСТКИ ---
 document.getElementById("clearBtn").onclick = function(){
   // Очистка полей ввода и результатов... (оставлено без изменений)
   document.getElementById("actual").value = '';
@@ -566,41 +597,50 @@ document.getElementById('extraToggle').addEventListener('change', function () {
   }
 });
 
-// --- ФУНКЦИОНАЛ ПЕРЕКЛЮЧЕНИЯ ТЕМЫ (ИСПРАВЛЕНО) ---
+// --- ФУНКЦИОНАЛ ПЕРЕКЛЮЧЕНИЯ ТЕМЫ (ИСПРАВЛЕНО И ВОССТАНОВЛЕНО) ---
 const themeToggle = document.getElementById('themeToggle');
 const htmlEl = document.documentElement; 
 const THEME_KEY = 'theme-preference';
 
-// Функция для установки темы на основе сохраненного значения
+// 1. Устанавливает тему (атрибут data-theme и состояние переключателя)
 function applyTheme(preference) {
   if (preference === 'dark') {
-    htmlEl.classList.add('dark-mode');
+    htmlEl.setAttribute('data-theme', 'dark');
     themeToggle.checked = true;
-  } else {
-    htmlEl.classList.remove('dark-mode');
+  } else if (preference === 'light') {
+    htmlEl.setAttribute('data-theme', 'light');
     themeToggle.checked = false;
+  } else {
+    // Если "system", удаляем атрибут, чтобы сработал @media
+    htmlEl.removeAttribute('data-theme');
+    // Проверяем систему для установки состояния переключателя
+    const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    themeToggle.checked = isSystemDark;
   }
 }
 
+// 2. Загружает сохраненные предпочтения или использует системные
 function loadThemePreference() {
   const savedPreference = localStorage.getItem(THEME_KEY);
   
-  if (savedPreference) {
-    // Если есть сохраненное предпочтение, используем его
-    applyTheme(savedPreference);
-  } else {
-    // Если нет, используем системное предпочтение
-    const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    applyTheme(isSystemDark ? 'dark' : 'light');
-    // Не сохраняем системное, пока пользователь не переключит вручную
-  }
+  // Если пользователь никогда не переключал, используем 'system'
+  applyTheme(savedPreference || 'system');
 }
 
-// Обработка ручного переключения
+// 3. Обработка ручного переключения
 themeToggle.addEventListener('change', function() {
   const newPreference = this.checked ? 'dark' : 'light';
   applyTheme(newPreference);
   localStorage.setItem(THEME_KEY, newPreference);
+});
+
+// Дополнительная проверка на случай, если система меняет тему (например, по расписанию)
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    // Если пользователь не выбрал принудительную тему ('dark' или 'light'),
+    // обновляем состояние переключателя, чтобы соответствовало системе.
+    if (!localStorage.getItem(THEME_KEY)) {
+        themeToggle.checked = e.matches;
+    }
 });
 
 // Запускаем загрузку темы
