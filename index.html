@@ -70,10 +70,10 @@
     padding:14px 12px;
     font-size:18px;
     border-radius:12px;
-    border:1px solid var(--border-color); /* Используем переменную */
+    border:1px solid var(--border-color);
     margin-bottom:12px;
     box-sizing:border-box;
-    background: var(--card); /* Убедимся, что фон не прозрачный */
+    background: var(--card);
     color: var(--main-text);
   }
 
@@ -81,6 +81,13 @@
     outline:none;
     border-color:var(--accent);
     box-shadow:0 0 0 2px rgba(0,102,255,0.2);
+  }
+
+  /* --- СТИЛИ ДЛЯ РЯДА КНОПОК --- */
+  .button-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
   }
 
   .btn{
@@ -92,15 +99,33 @@
     color:white;
     font-size:18px;
     font-weight:600;
+    flex-grow: 1; /* Основная кнопка занимает все место */
   }
+  
+  /* Маленькая красная кнопка с иконкой (ОЧИСТИТЬ) */
+  .small-icon-btn {
+    padding: 14px;
+    border-radius: 12px;
+    border: 0;
+    color: white; /* Цвет иконки */
+    cursor: pointer;
+    flex-shrink: 0; /* Не сжимать */
+  }
+  .small-icon-btn.red {
+    background: var(--bad); /* Красный фон */
+  }
+  .small-icon-btn svg {
+    display: block;
+  }
+  /* --- КОНЕЦ СТИЛЕЙ ДЛЯ РЯДА КНОПОК --- */
 
   .results{display:flex;flex-direction:column;gap:16px;}
 
   .panel{
-    background:var(--card); /* Используем переменную */
+    background:var(--card);
     border-radius:16px;
     padding:16px;
-    border:1px solid var(--panel-border); /* Используем переменную */
+    border:1px solid var(--panel-border);
   }
 
   .panel h3{margin:0 0 10px;font-size:18px;}
@@ -110,7 +135,7 @@
     justify-content:space-between;
     padding:8px 0;
     font-size:16px;
-    border-top:1px solid var(--line-divider); /* Используем переменную */
+    border-top:1px solid var(--line-divider);
   }
   .line:first-of-type{border-top:0;padding-top:0;}
 
@@ -138,10 +163,10 @@
     border-radius: 10px;
     padding: 10px;
     font-size: 14px;
-    border: 1px solid var(--border-color); /* Используем переменную */
+    border: 1px solid var(--border-color);
     box-sizing: border-box;
     display: block;
-    background: var(--card); /* Убедимся, что фон не прозрачный */
+    background: var(--card);
     color: var(--main-text);
   }
 
@@ -150,12 +175,12 @@
     padding:8px 12px;
     border-radius:8px;
     border:0;
-    background:var(--small-btn-bg); /* Используем переменную */
-    color: var(--main-text); /* Используем переменную */
+    background:var(--small-btn-bg);
+    color: var(--main-text);
     cursor:pointer;
   }
   
-  /* ... (остальные стили не изменены, так как они не затрагивают цвета) ... */
+  /* --- Стили для дополнительных параметров --- */
   .toggle-row {
     display: flex;
     justify-content: space-between;
@@ -185,10 +210,10 @@
     width: 100%;
     padding: 12px;
     border-radius: 10px;
-    border: 1px solid var(--border-color); /* Используем переменную */
+    border: 1px solid var(--border-color);
     font-size: 16px;
     box-sizing: border-box;
-    background: var(--card); /* Убедимся, что фон не прозрачный */
+    background: var(--card);
     color: var(--main-text);
   }
   
@@ -200,14 +225,12 @@
     height: 28px; 
   }
 
-  /* Скрываем стандартный чекбокс */
   .switch input {
     opacity: 0;
     width: 0;
     height: 0;
   }
 
-  /* Фон слайдера (выключенное состояние) */
   .slider {
     position: absolute;
     cursor: pointer;
@@ -217,11 +240,10 @@
     bottom: 0;
     transition: .4s;
     border-radius: 28px;
-    background-color: var(--zero-bg); /* Светло-серый/Темно-серый */
-    border: 1px solid var(--zero-border); /* Граница */
+    background-color: var(--zero-bg); /* Цвет неактивного слайдера */
+    border: 1px solid var(--zero-border);
   }
 
-  /* Ползунок */
   .slider:before {
     position: absolute;
     content: "";
@@ -229,19 +251,17 @@
     width: 20px;
     left: 4px;
     bottom: 3px;
-    background-color: white; /* Светлый ползунок */
+    background-color: white; 
     transition: .4s;
     border-radius: 50%;
     box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   }
 
-  /* Активный слайдер */
   input:checked + .slider {
     background-color: var(--accent);
     border-color: var(--accent);
   }
 
-  /* Перемещение ползунка */
   input:checked + .slider:before {
     transform: translateX(20px);
   }
@@ -249,26 +269,17 @@
   /* --- ТЕМНАЯ ТЕМА (Dark Mode - Активируется системными настройками) --- */
   @media (prefers-color-scheme: dark) {
     :root{
-      /* Фон и карточки */
       --bg: #1c1c1e;        
       --card: #2c2c2e;      
-      
-      /* Тексты */
       --main-text:#ffffff;
-      --muted-text:#ffffff; /* <<< ИЗМЕНЕНО: теперь белый для названий параметров */
-      
-      /* Границы и разделители */
+      --muted-text:#ffffff; 
       --border-color:#555;
       --panel-border:#555;
       --line-divider:#444;
-      
-      /* Цвета состояний */
       --green: #2d4538;
       --red: #4a2c2c;
       --good: #57d657;
       --bad: #ff6666;
-
-      /* Элементы .zero */
       --zero-bg: #444;
       --zero-border: #777;
       --zero-text: #ccc;
@@ -288,8 +299,42 @@
     }
 
     .slider:before {
-        background-color: #f2f2f7; /* Светлый цвет ползунка в темной теме */
+        background-color: #f2f2f7; 
     }
+  }
+
+  /* --- ТЕМНАЯ ТЕМА (Ручное принуждение - для переключателя) --- */
+  html.dark-mode :root {
+    /* Дублируем переменные темной темы */
+    --bg: #1c1c1e;        
+    --card: #2c2c2e;      
+    --main-text:#ffffff;
+    --muted-text:#ffffff;
+    --border-color:#555;
+    --panel-border:#555;
+    --line-divider:#444;
+    --green: #2d4538;
+    --red: #4a2c2c;
+    --good: #57d657;
+    --bad: #ff6666;
+    --zero-bg: #444;
+    --zero-border: #777;
+    --zero-text: #ccc;
+    --small-btn-bg: #444;
+  }
+  
+  /* Дополнительные стили, которые нужно переопределить */
+  html.dark-mode .card{
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4); 
+  }
+  html.dark-mode input[type="number"]:focus{
+    box-shadow:0 0 0 2px rgba(0,136,255,0.4);
+  }
+  html.dark-mode .small-btn{
+    color: #fff;
+  }
+  html.dark-mode .slider:before {
+      background-color: #f2f2f7; 
   }
 
 </style>
@@ -325,11 +370,27 @@
       <input id="midPoints" type="number" step="1" placeholder="необов’язково">
     </div>
 
-    <button class="btn" id="calcBtn">Розрахувати</button>
+    <div class="button-row">
+      <button class="small-icon-btn red" id="clearBtn" title="Очистити">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+          <path d="M16 9v10H8V9h8m-1.5-6h-5L9 4H7v2h10V4h-2l-1.5-3zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"/>
+        </svg>
+      </button>
+      <button class="btn" id="calcBtn">Розрахувати</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <label class="toggle-row">
+      <span>Темна тема</span>
+      <label class="switch">
+        <input type="checkbox" id="themeToggle">
+        <span class="slider"></span>
+      </label>
+    </label>
   </div>
 
   <div class="results">
-
     <div class="panel">
       <h3>Стандарт</h3>
       <div class="line"><span>Розрахункова сума</span><span class="val" id="stdCalc">—</span></div>
@@ -358,7 +419,6 @@
 </div>
 
 <script>
-// JavaScript не требует изменений.
 const STD = {minKm:1.9, base:100, perKm:17.6, name:"Стандарт", extraMinute:3, extraPoint:10};
 const CFM = {minKm:2.1, base:115, perKm:19.8, name:"Комфорт", extraMinute:3, extraPoint:10};
 const BIZ = {minKm:1.6, base:140, perKm:23.5, name:"Бізнес", extraMinute:4, extraPoint:10};
@@ -399,7 +459,7 @@ function getGreeting() {
 
   if (h >= 5 && h < 12) return "Доброго ранку!🌤️";
   if (h >= 12 && h < 17) return "Доброго дня!🌤️";
-  if (h >= 17 && h >= 17 && h < 23) return "Доброго вечора!🌙✨";
+  if (h >= 17 && h < 23) return "Доброго вечора!🌙✨";
   return "Доброї ночі!✨🌙";
 }
 
@@ -492,6 +552,39 @@ document.getElementById("calcBtn").onclick = function(){
   document.getElementById('bizMsg').value = genMsg(BIZ, km, coef, actual, paidMinutes, midPoints);
 };
 
+// --- ФУНКЦИОНАЛ КНОПКИ ОЧИСТКИ (НОВЫЙ) ---
+document.getElementById("clearBtn").onclick = function(){
+  // Очистка полей ввода
+  document.getElementById("actual").value = '';
+  document.getElementById("distance").value = '';
+  document.getElementById("coef").value = '';
+  document.getElementById("paidMinutes").value = '';
+  document.getElementById("midPoints").value = '';
+  
+  // Очистка результатов
+  document.getElementById("stdCalc").textContent = '—';
+  document.getElementById("cfCalc").textContent = '—';
+  document.getElementById("bizCalc").textContent = '—';
+  
+  colorize(document.getElementById("stdDiff"), NaN);
+  colorize(document.getElementById("cfDiff"), NaN);
+  colorize(document.getElementById("bizDiff"), NaN);
+  
+  document.getElementById('stdMsg').value = '';
+  document.getElementById('cfMsg').value = '';
+  document.getElementById('bizMsg').value = '';
+  
+  // Закрытие доп. полей и сброс
+  const extraToggle = document.getElementById('extraToggle');
+  const extraFields = document.getElementById('extraFields');
+  if (extraToggle.checked) {
+    extraToggle.checked = false;
+    extraFields.classList.remove('open');
+  }
+};
+// --- КОНЕЦ ФУНКЦИОНАЛА КНОПКИ ОЧИСТКИ ---
+
+
 document.getElementById('extraToggle').addEventListener('change', function () {
   const extra = document.getElementById('extraFields');
   const paidInput = document.getElementById('paidMinutes');
@@ -505,6 +598,51 @@ document.getElementById('extraToggle').addEventListener('change', function () {
     midInput.value = '';
   }
 });
+
+// --- ФУНКЦИОНАЛ ПЕРЕКЛЮЧЕНИЯ ТЕМЫ (НОВЫЙ) ---
+const themeToggle = document.getElementById('themeToggle');
+const htmlEl = document.documentElement; // <html> element
+const THEME_KEY = 'theme-preference';
+
+// Загрузка предпочтений темы при старте
+function loadThemePreference() {
+  const preference = localStorage.getItem(THEME_KEY);
+  // Используем window.matchMedia для определения системной настройки
+  const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  
+  if (preference === 'dark') {
+    // Если пользователь вручную выбрал темную тему
+    htmlEl.classList.add('dark-mode');
+    themeToggle.checked = true;
+  } else if (preference === 'light') {
+    // Если пользователь вручную выбрал светлую тему
+    htmlEl.classList.remove('dark-mode');
+    themeToggle.checked = false;
+  } else if (isSystemDark) {
+    // Если нет сохраненного предпочтения, но система в темной теме, включаем переключатель
+    themeToggle.checked = true;
+    // Оставляем system-based dark mode (через @media), класс 'dark-mode' не добавляем
+  } else {
+    // По умолчанию, светлая тема
+    themeToggle.checked = false;
+  }
+}
+
+// Обработка ручного переключения
+themeToggle.addEventListener('change', function() {
+  if (this.checked) {
+    // Включили темную тему вручную
+    htmlEl.classList.add('dark-mode');
+    localStorage.setItem(THEME_KEY, 'dark');
+  } else {
+    // Включили светлую тему вручную
+    htmlEl.classList.remove('dark-mode');
+    localStorage.setItem(THEME_KEY, 'light');
+  }
+});
+
+// Запускаем загрузку темы
+loadThemePreference();
 
 // PWA Service Worker registration
 if ('serviceWorker' in navigator) {
