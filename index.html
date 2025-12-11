@@ -43,6 +43,35 @@
     --zero-text:#555;
     --small-btn-bg:#eee;
   }
+
+  /* --- ПЕРЕМЕННЫЕ ДЛЯ ТЕМНОЙ ТЕМЫ --- */
+  .dark-theme{
+    /* Основные цвета */
+    --bg:#121212;
+    --card:#1f1f1f;
+    --accent:#5599ff;
+    
+    /* Тексты */
+    --main-text:#f0f0f0;
+    --muted-text:#a0a0a0; 
+    
+    /* Границы и разделители */
+    --border-color:#333;
+    --panel-border:#2e2e2e;
+    --line-divider:#333;
+    
+    /* Цвета состояний */
+    --green:#1a3a1f; 
+    --red:#472c2c; 
+    --good:#5fb371; 
+    --bad:#ff7575; 
+    
+    /* Элементы .zero */
+    --zero-bg:#2d2d2d;
+    --zero-border:#444;
+    --zero-text:#a0a0a0;
+    --small-btn-bg:#333;
+  }
   
   /* --- БАЗОВЫЕ СТИЛИ (Одинаковые для обеих тем) --- */
   body{
@@ -51,6 +80,12 @@
     margin:0;
     padding:0;
     color: var(--main-text); 
+  }
+  
+  /* Применяем основные стили для тёмной темы, когда класс установлен */
+  .dark-theme body {
+    background: var(--bg);
+    color: var(--main-text);
   }
 
   .wrap{max-width:600px;margin:0 auto;padding:16px;}
@@ -62,6 +97,11 @@
     padding:18px;
     box-shadow:0 6px 18px rgba(0,0,0,0.06);
     margin-bottom:16px;
+  }
+
+  /* Для темной темы тени нужно сделать менее заметными */
+  .dark-theme .card {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   }
 
   label{font-size:15px;color:var(--muted-text);margin-bottom:6px;display:block;}
@@ -266,8 +306,6 @@
   input:checked + .slider:before {
     transform: translateX(20px);
   }
-
-
 </style>
 </head>
 
@@ -400,7 +438,7 @@ function genMsg(t, km, coef, actual, paidMinutes, midPoints){
   const baseFare = calcFare(km, t);
   let total = baseFare * coef;
 
-  let lines = [`• Базовий тариф: (${t.base} + (${km} - ${t.minKm}) × ${t.perKm}) × ${coef} = ${(baseFare*coef).toFixed(2)} грн`];
+  let lines = [`• Базовий тариф: (${t.base} + (${km.toFixed(2)} - ${t.minKm}) × ${t.perKm}) × ${coef.toFixed(2)} = ${(baseFare*coef).toFixed(2)} грн`];
 
   if(paidMinutes > 0){
     let addPaid = paidMinutes * t.extraMinute;
@@ -471,6 +509,7 @@ document.getElementById("calcBtn").onclick = function(){
   document.getElementById("cfCalc").textContent = fmt(totals.cf);
   document.getElementById("bizCalc").textContent = fmt(totals.biz);
 
+  // Для разницы используем фактическая - расчетная (Actual - Calculated)
   colorize(document.getElementById("stdDiff"), actual - totals.std);
   colorize(document.getElementById("cfDiff"), actual - totals.cf);
   colorize(document.getElementById("bizDiff"), actual - totals.biz);
@@ -481,7 +520,7 @@ document.getElementById("calcBtn").onclick = function(){
 };
 
 document.getElementById("clearBtn").onclick = function(){
-  // Очистка полей ввода и результатов... (оставлено без изменений)
+  // Очистка полей ввода и результатов
   document.getElementById("actual").value = '';
   document.getElementById("distance").value = '';
   document.getElementById("coef").value = '';
@@ -522,6 +561,38 @@ document.getElementById('extraToggle').addEventListener('change', function () {
     midInput.value = '';
   }
 });
+
+
+// --- ФУНКЦИОНАЛ ПЕРЕКЛЮЧЕНИЯ ТЕМЫ ---
+const themeToggle = document.getElementById('themeToggle');
+const body = document.body;
+const THEME_KEY = 'uklonTheme';
+
+// 1. Установка начальной темы при загрузке
+function setInitialTheme() {
+  const savedTheme = localStorage.getItem(THEME_KEY);
+  
+  if (savedTheme === 'dark') {
+    body.classList.add('dark-theme');
+    themeToggle.checked = true;
+  } 
+}
+
+// 2. Обработчик для переключателя
+themeToggle.addEventListener('change', function () {
+  if (this.checked) {
+    // Включаем тёмную тему
+    body.classList.add('dark-theme');
+    localStorage.setItem(THEME_KEY, 'dark');
+  } else {
+    // Включаем светлую тему
+    body.classList.remove('dark-theme');
+    localStorage.setItem(THEME_KEY, 'light');
+  }
+});
+
+// Вызываем функцию для установки темы после загрузки скрипта
+setInitialTheme();
 
 
 // PWA Service Worker registration
