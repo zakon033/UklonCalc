@@ -501,12 +501,12 @@ function genMsg(t, km, coef, actual, paidMinutes, midPoints){
 
   if(paidMinutes > 0){
     let addPaid = paidMinutes * t.extraMinute;
-    lines.push(`• Платні хв. (${paidMinutes} × ${t.extraMinute} грн) = ${addPaid.toFixed(2)} грн`);
+    lines.push(`• Платні хв. (${paidMinutes} × ${t.extraMinute} 💵) = ${addPaid.toFixed(2)} 💵`);
     total += addPaid;
   }
   if(midPoints > 0){
     let addPoints = midPoints * t.extraPoint;
-    lines.push(`• Проміжні точки (${midPoints} × ${t.extraPoint} грн) = ${addPoints.toFixed(2)} грн`);
+    lines.push(`• Проміжні точки (${midPoints} × ${t.extraPoint} 💵) = ${addPoints.toFixed(2)} 💵`);
     total += addPoints;
   }
 
@@ -517,10 +517,10 @@ function genMsg(t, km, coef, actual, paidMinutes, midPoints){
   const greeting = getGreeting();
 
   return `${greeting}
-Прошу донарахувати ${diff.toFixed(2)} грн.
-Розрахункова сума - ${total.toFixed(2)} грн.:
+Прошу донарахувати ${diff.toFixed(2)} 💵.
+Розрахункова сума - ${total.toFixed(2)} 💵:
 ${lines.join("\n")}
-Фактична — ${actual.toFixed(2)} грн.
+Фактична — ${actual.toFixed(2)} 💵
 Дякую!🤗`;
 }
 
