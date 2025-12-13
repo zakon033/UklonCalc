@@ -497,11 +497,11 @@ function genMsg(t, km, coef, actual, paidMinutes, midPoints){
   const baseFare = calcFare(km, t);
   let total = baseFare * coef;
 
-  let lines = [`• Базовий тариф: (${t.base} + (${km.toFixed(2)} - ${t.minKm}) × ${t.perKm}) × ${coef.toFixed(2)} = ${(baseFare*coef).toFixed(2)} грн`];
+  let lines = [`• (${t.base} + (${km.toFixed(2)} - ${t.minKm}) × ${t.perKm}) × ${coef.toFixed(2)} = ${(baseFare*coef).toFixed(2)} грн`];
 
   if(paidMinutes > 0){
     let addPaid = paidMinutes * t.extraMinute;
-    lines.push(`• Платні хвилини (${paidMinutes} × ${t.extraMinute} грн) = ${addPaid.toFixed(2)} грн`);
+    lines.push(`• Платні хв. (${paidMinutes} × ${t.extraMinute} грн) = ${addPaid.toFixed(2)} грн`);
     total += addPaid;
   }
   if(midPoints > 0){
@@ -517,12 +517,12 @@ function genMsg(t, km, coef, actual, paidMinutes, midPoints){
   const greeting = getGreeting();
 
   return `${greeting}
-Прошу перерахувати вартість поїздки.
+Прошу перерахувати вартість.
 Розрахункова сума - ${total.toFixed(2)} грн.:
 ${lines.join("\n")}
 Фактична — ${actual.toFixed(2)} грн.
-Прошу донарахувати різницю - ${diff.toFixed(2)} грн.
-Щиро дякую!🤗`;
+Прошу донарахувати - ${diff.toFixed(2)} грн.
+Дякую!🤗`;
 }
 
 function bindCopy(btnId, taId){
